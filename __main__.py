@@ -1,5 +1,10 @@
 import numpy as np
 import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+
+matplotlib.use("TKAgg")
+
 
 def kaprekar_constant():
     results = {}
@@ -7,13 +12,13 @@ def kaprekar_constant():
         start_num = i
         iterations = 0
         while True:
-            a = int(''.join(np.sort([j for j in str(i)])[::-1]))
-            b = int(''.join(np.sort([j for j in str(i)])))
+            a = int("".join(np.sort([j for j in str(i)])[::-1]))
+            b = int("".join(np.sort([j for j in str(i)])))
             if i == a - b:
                 results[start_num] = {
-                    'answer': a - b,
-                    'iterations': iterations,
-                    'unique': len(np.unique([i for i in str(start_num)])),
+                    "answer": a - b,
+                    "iterations": iterations,
+                    "unique": len(np.unique([i for i in str(start_num)])),
                 }
                 break
             else:
@@ -21,19 +26,20 @@ def kaprekar_constant():
                 i = i if i >= 1000 else i * 10
                 iterations += 1
 
-    df = pd.DataFrame.from_dict(results, orient='index')
+    df = pd.DataFrame.from_dict(results, orient="index")
     unique, count = np.unique(ar=df.answer, return_counts=True)
-    print(f'n={len(results)}')
-    print(f'{count[1]} x {unique[1]} {df.loc[df.answer == 6174].index.values}')
-    print(f'{count[0]} x {unique[0]} {df.loc[df.answer == 0].index.values}')
+    print(f"n={len(results)}")
+    print(f"{count[1]} x {unique[1]} {df.loc[df.answer == 6174].index.values}")
+    print(f"{count[0]} x {unique[0]} {df.loc[df.answer == 0].index.values}")
     (
-        df
-        .loc[df.answer == 6174, 'iterations']
+        df.loc[df.answer == 6174, "iterations"]
         .value_counts()
         .sort_index()
-        .plot(kind='bar')
-        .set_title('Iterations to convergence')
-    );
+        .plot(kind="bar")
+        .set_title("Iterations to convergence")
+    )
+    plt.show()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     kaprekar_constant()
